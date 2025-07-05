@@ -7,7 +7,7 @@
 
 More than a habit tracker — it's your personal habit coach.
 
-HabiTu is built upon the core principles from the book atomic habits.
+HabiTú is built on the core principles from the book Atomic Habits.
 
 This coach guides you from defining your idenitity to suggesting simple habits that help you build lasting systems — step by step, without presure
 
