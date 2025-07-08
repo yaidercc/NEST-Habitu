@@ -7,7 +7,7 @@ services:
     ports:
       - "5435:5432"
     environment:
-      POSTRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     container_name: habitudb
     volumes:
