@@ -2,34 +2,34 @@ import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, Prima
 
 @Entity("user")
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column('text')
     name: string;
 
     @Column('text')
-    last_name:string;
+    last_name: string;
 
     @Column('text')
     email: string;
 
-    @Column("text")
+    @Column("text", { select: false })
     password: string
-    
-    @CreateDateColumn()
+
+    @CreateDateColumn({ select: false })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ select: false })
     updatedAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ select: false })
     deletedAt: Date;
 
 
     @BeforeInsert()
-    checkBeforeInsertOrUpdate(){
-        if(this.name) this.name = this.name.toLowerCase()
-        if(this.last_name) this.last_name = this.last_name.toLowerCase()
+    checkBeforeInsertOrUpdate() {
+        if (this.name) this.name = this.name.toLowerCase()
+        if (this.last_name) this.last_name = this.last_name.toLowerCase()
     }
 }

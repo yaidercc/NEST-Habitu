@@ -57,11 +57,9 @@ export class UserService {
 
     if (!validatePassword) throw new BadRequestException(`email or password are incorrect`)
 
-    const token = this.generateJWT({ id: user.id })
-    console.log(token)
     return {
       ...user,
-      token
+      token: this.generateJWT({ id: user.id })
     }
 
   }
@@ -87,8 +85,16 @@ export class UserService {
     }
 
     if (!user) throw new NotFoundException(`user with id: ${term}, not found`)
+    if (user.deletedAt) throw new BadRequestException(`user with id: ${term}, is not inactive.`)
 
     return user;
+  }
+
+  checkAuthStatus(user: User) {
+    return {
+      ...user,
+      token: this.generateJWT({ id: user.id })
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config"
+import { HabitModule } from './habit/habit.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ConfigModule } from "@nestjs/config"
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true
-    })
+    }),
+    HabitModule
   ],
   controllers: [],
   providers: [],

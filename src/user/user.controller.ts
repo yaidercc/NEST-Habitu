@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/update-user copy';
+import { Auth, GetUser } from './decorators';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
@@ -10,6 +12,14 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Get("check-auth-status")
+  @Auth()
+  checkAuthStatus(
+    @GetUser() user: User
+  ){
+    return this.userService.checkAuthStatus(user);
   }
 
   @Post("login")
