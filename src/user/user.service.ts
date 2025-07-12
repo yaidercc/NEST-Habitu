@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/login-user';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { LoginUserDto } from './dto/update-user copy';
 import { JwtStrategy } from './strategies/jwt-strategies';
 import { JwtService } from "@nestjs/jwt"
 import { JWTpayload } from './strategies/interfaces/jwt-interfaces';
+import { validate as isUUID } from "uuid"
 
 @Injectable()
 export class UserService {
@@ -69,15 +70,29 @@ export class UserService {
     return this.jwtService.sign(payload)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // TODO: Improve this, allow to look for litle parts 
+  async findOne(term: string) {
+    let user: User | null = null;
+
+    if (isUUID(term)) user = await this.userRepository.findOneBy({ id: term });
+    else {
+      const queryBuilder = this.userRepository.createQueryBuilder();
+      user = await queryBuilder
+        .where("name=:name or last_name=:last_name or email=:email", {
+          name: term.toLowerCase().trim(),
+          last_name: term.toLowerCase().trim(),
+          email: term.trim()
+        })
+        .getOne()
+    }
+
+    if (!user) throw new NotFoundException(`user with id: ${term}, not found`)
+
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }

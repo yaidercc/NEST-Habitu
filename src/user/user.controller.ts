@@ -18,14 +18,9 @@ export class UserController {
     return this.userService.login(loginUser);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.userService.findOne(term);
   }
 
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }
