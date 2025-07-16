@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config"
 import { HabitModule } from './habit/habit.module';
+import { HabitLogModule } from './habit-log/habit-log.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { HabitModule } from './habit/habit.module';
       autoLoadEntities: true,
       synchronize: true
     }),
-    HabitModule
+    HabitModule,
+    HabitLogModule
   ],
   controllers: [],
   providers: [],

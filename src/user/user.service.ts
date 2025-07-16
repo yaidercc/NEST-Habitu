@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/login-user';
+import { UpdateUserDto } from './dto/update-user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from "bcrypt"
-import { LoginUserDto } from './dto/update-user copy';
+import { LoginUserDto } from './dto/login-user';
 import { JwtStrategy } from './strategies/jwt-strategies';
 import { JwtService } from "@nestjs/jwt"
 import { JWTpayload } from './strategies/interfaces/jwt-interfaces';
@@ -97,8 +97,17 @@ export class UserService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.preload({
+      id,
+      ...updateUserDto
+    })
+
+    if(!user) throw new NotFoundException(`user with id: ${id} does not exits.`)
+
+    await this.userRepository.save(user)
+
+    return user
   }
 
 }
