@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/498efdae-fdd1-4609-9946-e822849da3ea" width="600" height="400" alt="Nest Logo" />
+  <img src="https://github.com/user-attachments/assets/498efdae-fdd1-4609-9946-e822849da3ea" width="600" height="600" alt="Nest Logo" />
 </p>
 
 
