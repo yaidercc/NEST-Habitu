@@ -25,6 +25,7 @@ export class GoalController {
   }
 
   @Get(':term')
+  @Auth()
   findOne(@Param('term') term: string) {
     return this.goalService.findOne(term);
   }

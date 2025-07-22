@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Habit } from "../../habit/entities/habit.entity";
 import { User } from "src/user/entities/user.entity";
 import { Goal } from "src/goal/entities/goal.entity";
@@ -35,7 +35,9 @@ export class Identity {
     )
     system: System;
 
-    @Column("text")
+    @Column("text", {
+        unique: true
+    })
     description: string;
 
     @CreateDateColumn({ select: false })
@@ -46,4 +48,10 @@ export class Identity {
 
     @DeleteDateColumn({ select: false })
     deletedAt: Date;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    beforeUpdateAndInsert() {
+        if (this.description) this.description = this.description.toLowerCase();
+    }
 }
