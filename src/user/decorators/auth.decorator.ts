@@ -3,6 +3,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 export function Auth(...roles: string[]) {
   return applyDecorators(
-    UseGuards(AuthGuard())
+    UseGuards(AuthGuard('jwt'))
   );
 }

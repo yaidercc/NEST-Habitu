@@ -4,6 +4,9 @@ import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config"
 import { HabitModule } from './habit/habit.module';
 import { HabitLogModule } from './habit-log/habit-log.module';
+import { SystemModule } from './system/system.module';
+import { IdentityModule } from './identity/identity.module';
+import { GoalModule } from './goal/goal.module';
 
 @Module({
   imports: [
@@ -20,7 +23,10 @@ import { HabitLogModule } from './habit-log/habit-log.module';
       synchronize: true
     }),
     HabitModule,
-    HabitLogModule
+    HabitLogModule,
+    SystemModule,
+    IdentityModule,
+    GoalModule
   ],
   controllers: [],
   providers: [],

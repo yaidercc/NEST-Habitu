@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { HabitService } from './habit.service';
 import { HabitController } from './habit.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Habit, System } from './entities';
+import { Habit } from './entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Habit, System])],
+  imports: [TypeOrmModule.forFeature([Habit])],
   controllers: [HabitController],
   providers: [HabitService],
   exports: [TypeOrmModule]

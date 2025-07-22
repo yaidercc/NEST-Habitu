@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,13 +6,14 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from "bcrypt"
 import { LoginUserDto } from './dto/login-user';
-import { JwtStrategy } from './strategies/jwt-strategies';
 import { JwtService } from "@nestjs/jwt"
 import { JWTpayload } from './strategies/interfaces/jwt-interfaces';
 import { validate as isUUID } from "uuid"
+import { handleException } from 'src/common/utils/handleErrors';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger("UserService")
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -31,14 +32,13 @@ export class UserService {
 
       const { password: _, ...userWithoutPass } = user
 
-
       const token = this.generateJWT({ id: user.id })
       return {
         ...userWithoutPass,
         token
       }
     } catch (error) {
-      throw new InternalServerErrorException(error)
+      handleException(error, this.logger)
     }
   }
 
@@ -68,7 +68,7 @@ export class UserService {
     return this.jwtService.sign(payload)
   }
 
-  // TODO: Improve this, allow to look for litle parts 
+  // TODO: Improve this, allow to look for little parts 
   async findOne(term: string) {
     let user: User | null = null;
 

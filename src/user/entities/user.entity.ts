@@ -1,9 +1,10 @@
 
 import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Identity } from "./identity.entity";
-import { Goal } from "./goal.entity";
+
 import { Habit } from "src/habit/entities";
 import { HabitLog } from "src/habit-log/entities/habit-log.entity";
+import { Goal } from "src/goal/entities/goal.entity";
+import { Identity } from "src/identity/entities/identity.entity";
 
 @Entity("user")
 export class User {
@@ -28,7 +29,6 @@ export class User {
     @OneToMany(
         () => HabitLog,
         habitlog => habitlog.user,
-        { eager: true }
     )
     habitlog: HabitLog;
 
