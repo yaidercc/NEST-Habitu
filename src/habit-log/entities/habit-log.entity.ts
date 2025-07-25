@@ -1,5 +1,7 @@
 import { Habit } from "src/habit/entities";
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { HabitLogStatus } from "../enum/habitLogStatus";
 
 @Entity("habitlog")
 export class HabitLog {
@@ -13,8 +15,26 @@ export class HabitLog {
     habit: Habit;
 
     @ManyToOne(
-        () => Habit,
+        () => User,
         user => user.habitlog
     )
-    user: HabitLog;
+    user: User;
+
+    @Column("date")
+    date: Date;
+
+    @Column({ type: "enum", enum: HabitLogStatus })
+    status: HabitLogStatus
+
+    @Column("text",{default: null})
+    note?: string;
+
+    @CreateDateColumn({ select: false })
+    createdAt: Date;
+
+    @UpdateDateColumn({ select: false })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ select: false })
+    deletedAt: Date;
 }

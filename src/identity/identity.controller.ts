@@ -5,12 +5,12 @@ import { UpdateIdentityDto } from './dto/update-identity.dto';
 import { Auth, GetUser } from 'src/user/decorators';
 import { User } from 'src/user/entities/user.entity';
 
+@Auth()
 @Controller('identity')
 export class IdentityController {
   constructor(private readonly identityService: IdentityService) { }
 
   @Post()
-  @Auth()
   create(
     @Body() createIdentityDto: CreateIdentityDto,
     @GetUser() user: User
@@ -24,7 +24,6 @@ export class IdentityController {
   }
 
   @Get(':term')
-  @Auth()
   findOne(@Param('term') term: string) {
     return this.identityService.findOne(term);
   }

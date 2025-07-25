@@ -31,7 +31,7 @@ export class IdentityService {
       const goal = await queryRunner.manager.findOneBy(Goal, { id: goalId })
 
       if (!system) throw new NotFoundException("System not found")
-      if (!goal) throw new NotFoundException("System not found")
+      if (!goal) throw new NotFoundException("Goal not found")
 
       const identity = await queryRunner.manager.save(Identity, {
         ...restIdentityInfo,
@@ -40,7 +40,7 @@ export class IdentityService {
         system
       })
 
-      queryRunner.commitTransaction();
+      await queryRunner.commitTransaction();
 
       return identity
 
@@ -60,11 +60,9 @@ export class IdentityService {
     let identity: Identity | null = null;
     if (isUUID(term)) identity = await this.identityService.findOneBy({ id: term })
     else {
-      const queryBuilder = this.identityService.createQueryBuilder()
-      identity = await queryBuilder.
-        where("description=:description", {
-          description: term.toLowerCase()
-        }).getOne()
+      identity = await this.identityService.findOne({
+        where: { description: term.toLowerCase() }
+      });
     }
     if (!identity) throw new NotFoundException("identity not found")
 

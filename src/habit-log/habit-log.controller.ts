@@ -2,14 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { HabitLogService } from './habit-log.service';
 import { CreateHabitLogDto } from './dto/create-habit-log.dto';
 import { UpdateHabitLogDto } from './dto/update-habit-log.dto';
+import { Auth, GetUser } from 'src/user/decorators';
+import { User } from 'src/user/entities/user.entity';
 
+@Auth()
 @Controller('habit-log')
 export class HabitLogController {
-  constructor(private readonly habitLogService: HabitLogService) {}
+  constructor(private readonly habitLogService: HabitLogService) { }
 
   @Post()
-  create(@Body() createHabitLogDto: CreateHabitLogDto) {
-    return this.habitLogService.create(createHabitLogDto);
+  create(
+    @Body() createHabitLogDto: CreateHabitLogDto,
+    @GetUser() user: User
+  ) {
+    return this.habitLogService.create(createHabitLogDto, user);
   }
 
   @Get()
@@ -19,7 +25,7 @@ export class HabitLogController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.habitLogService.findOne(+id);
+    return this.habitLogService.findAllBy(id);
   }
 
   @Patch(':id')

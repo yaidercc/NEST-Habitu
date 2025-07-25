@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { HabitService } from './habit.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { Auth } from 'src/user/decorators';
 
 @Controller('habit')
+@Auth()
 export class HabitController {
   constructor(private readonly habitService: HabitService) {}
 
@@ -17,9 +19,9 @@ export class HabitController {
     return this.habitService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.habitService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.habitService.findOne(term);
   }
 
   @Patch(':id')

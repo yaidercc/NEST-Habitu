@@ -1,7 +1,7 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 import { HabitLog } from "src/habit-log/entities/habit-log.entity";
-import { FrequencyType } from "../enum/frequency-type";
+import { CustomDay, FrequencyType } from "../enum/frequency-type";
 import { Identity } from "src/identity/entities/identity.entity";
 import { System } from "src/system/entities/system.entity";
 
@@ -10,7 +10,8 @@ export class Habit {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column("text")
+    @Column("text", { unique: true })
+    @Index()
     description: string;
 
     @ManyToOne(
@@ -18,6 +19,11 @@ export class Habit {
         system => system.habit
     )
     system: System;
+
+    @Column("boolean", {
+        default: false
+    })
+    is_custom: boolean;
 
     @OneToMany(
         () => HabitLog,
@@ -34,11 +40,11 @@ export class Habit {
     @Column({ type: 'enum', enum: FrequencyType })
     frequency_type: FrequencyType;
 
-    @Column("text", { array: true, nullable: true })
-    custom_days?: string[]
+    // @Column({ type: 'enum', enum: CustomDay, array: true, nullable: true })
+    // custom_days?: CustomDay[]
 
     @Column("int", { nullable: true })
-    frequency_target?: number;
+    frequency_target: number;
 
     @CreateDateColumn()
     createdAt: Date

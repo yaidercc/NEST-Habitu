@@ -35,10 +35,9 @@ export class SystemService {
     let system: System | null = null;
     if (isUUID(term)) system = await this.systemRepository.findOneBy({ id: term })
     else {
-      const queryBuilder = this.systemRepository.createQueryBuilder();
-      system = await queryBuilder.where("description=:description", {
-        description: term.toLowerCase()
-      }).getOne()
+      system = await this.systemRepository.findOne({
+        where: { description: term.toLowerCase() }
+      });
     }
 
     if (!system) {
